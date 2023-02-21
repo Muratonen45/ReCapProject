@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
@@ -17,51 +19,68 @@ namespace Business.Concrete
             _carDal = cardal;
         }
 
-        public void Add(Car car)
+        public IDataResult<List<Car>> GetById(int carId)
         {
-            if (car.DailyPrice > 0 && car.Description.Length > 2)
-            {
-                _carDal.Add(car);
-            }
-            else
-            {
-                throw new Exception("Araba özelliklerini hatalı girdiniz.");
-            }
-
+            throw new NotImplementedException();
         }
 
-        public void Delete(Car car)
+        public IDataResult<List<Car>> GetAll()
+        {
+            if (DateTime.Now.Hour == 22)
+            {
+                return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
+        }
+        public IDataResult<List<Car>> GetAllByCategory(int id)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.CategoryId == id));
+        }
+
+        public IDataResult<List<Car>> GetByUnitPrice(decimal min, decimal max)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.DailyPrice >= min && p.DailyPrice <= max));
+        }
+
+        public IResult Add(Car car)
+        {
+            if (car.Description.Length >= 2 && car.DailyPrice < 40000000)
+            {
+                return new ErrorResult(Messages.CarNameInvalid);
+            }
+            _carDal.Add(car);
+
+            return new SuccessResult(Messages.CarAdded);
+        }
+
+        public IResult Delete(Car car)
         {
             _carDal.Delete(car);
+            return new SuccessResult(Messages.CarAdded);
         }
 
-        public List<Car> GetAll()
-        {
-            return _carDal.GetAll();
-        }
 
-        public Car GetById(int id)
-        {
-            return _carDal.Get(p => p.CarId == id);
-        }
 
-        public List<Car> GetCarsByBrandId(int id)
-        {
-            return _carDal.GetAll(p => p.BrandId == id);
-        }
-        public List<Car> GetCarsByColorId(int id)
-        {
-            return _carDal.GetAll(p => p.ColorId == id);
-        }
-
-        public List<CarDetailDto> GetProductDetails()
-        {
-            return new List<CarDetailDto>(_carDal.GetProductDetails());
-        }
-
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             _carDal.Update(car);
+
+            return new SuccessResult(Messages.CarAdded);
+        }
+
+        public IDataResult<List<Car>> GetCarsByBrandId(int id)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.BrandId == id));
+        }
+
+        public IDataResult<List<Car>> GetCarsByColorId(int id)
+        {
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.ColorId == id));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetProductDetails()
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetProductDetails());
         }
     }
 
