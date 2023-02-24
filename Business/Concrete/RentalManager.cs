@@ -43,5 +43,9 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
         }
+        public IDataResult<Rental> GetById(int id)
+        {
+            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.Id == id));
+        }
     }
 }
