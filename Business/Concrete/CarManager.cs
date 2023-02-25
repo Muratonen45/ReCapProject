@@ -1,5 +1,8 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -20,18 +23,11 @@ namespace Business.Concrete
             _carDal = cardal;
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            if (car.Description.Length >= 2 && car.DailyPrice > 0)
-            {
-                _carDal.Add(car);
-                return new SuccessResult(Messages.CarAdded);
-            }
-            else
-            {
-                Console.WriteLine("Yanlış giriş yapıldı! Araba açıklaması minimum 2 karakter, günlük fiyatı 0'dan büyük olmalıdır.");
-            }
-            return new ErrorResult(Messages.CarInvalid);
+            _carDal.Add(car);
+            return new SuccessResult(Messages.CarAdded);
         }
         public IResult Delete(Car car)
         {
