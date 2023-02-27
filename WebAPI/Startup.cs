@@ -40,6 +40,12 @@ namespace WebAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
+
+
 
             app.UseHttpsRedirection();
 

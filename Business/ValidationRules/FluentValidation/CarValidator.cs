@@ -10,16 +10,11 @@ namespace Business.ValidationRules.FluentValidation
     public class CarValidator : AbstractValidator<Car>
     {
         public CarValidator()
-      {
-        RuleFor(p => p.DailyPrice).GreaterThan(15000).WithMessage(Messages.CarDailyPriceInvalid);
-        RuleFor(p => p.Description).Must(StartWithA);
-      }
+        {
+            RuleFor(c => c.DailyPrice).GreaterThan(0).WithMessage(Messages.CarDailyPriceInvalid);
+            RuleFor(c => c.Description).MinimumLength(3);
 
-    private bool StartWithA(string arg)
-    {
-        return arg.StartsWith("a");
-    }
-
-}  
+        }  
+    }  
 }
 
