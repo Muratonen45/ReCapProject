@@ -12,7 +12,7 @@ namespace ConsoleUI
         {
             //InMemoryTest();
             Console.WriteLine("EF");
-            CarManager carManagerEF = new CarManager(new EfCarDal());
+            CarManager carManagerEF = new CarManager(new EfCarDal(), new BrandManager(new EfBrandDal()));
             BrandManager brandManagerEF = new BrandManager(new EfBrandDal());
             ColorManager colorManagerEF = new ColorManager(new EfColorDal());
             UserManager userManagerEF = new UserManager(new EfUserDal());
@@ -179,11 +179,11 @@ namespace ConsoleUI
 
             Console.WriteLine("Added Customer Entries with EF...");
 
-            userManagerEF.Add(new User {  FirstName = "Murat", LastName = "Önen", Email = "muratonen2002@gmail.com", Password = "123456" });
-            userManagerEF.Add(new User {  FirstName = "Ayşe", LastName = "Demir", Email = "a.demir@mail.com", Password = "123456" });
-            userManagerEF.Add(new User {  FirstName = "Ahmet", LastName = "Yılmaz", Email = "a.yilmaz@mail.com", Password = "123456" });
-            userManagerEF.Add(new User {  FirstName = "John", LastName = "Carpenter", Email = "j.carpenter@mail.com", Password = "123456" });
-            userManagerEF.Add(new User {  FirstName = "Alfred", LastName = "Hitchcock", Email = "a.hitchcock@mail.com", Password = "123456" });
+            //userManagerEF.Add(new User {  FirstName = "Murat", LastName = "Önen", Email = "muratonen2002@gmail.com", Password = "123456" });
+            //userManagerEF.Add(new User {  FirstName = "Ayşe", LastName = "Demir", Email = "a.demir@mail.com", Password = "123456" });
+            //userManagerEF.Add(new User {  FirstName = "Ahmet", LastName = "Yılmaz", Email = "a.yilmaz@mail.com", Password = "123456" });
+            //userManagerEF.Add(new User {  FirstName = "John", LastName = "Carpenter", Email = "j.carpenter@mail.com", Password = "123456" });
+            //userManagerEF.Add(new User {  FirstName = "Alfred", LastName = "Hitchcock", Email = "a.hitchcock@mail.com", Password = "123456" });
 
 
             Console.WriteLine("Added User Entries with EF...");
@@ -195,25 +195,25 @@ namespace ConsoleUI
             colorManagerEF.Update(new Color { ColorId = 4, ColorName = "Blue" });
             brandManagerEF.Update(new Brand { BrandId = 6, BrandName = "Ferrari S.p.A" });
         }
-        private static void InMemoryTest()
-        {
-            CarManager carManager = new CarManager(new InMemoryCarDal());
-            InMemoryCarDal inMemoryCarDal = new InMemoryCarDal();
-            GetAllTest(inMemoryCarDal);
-            Console.WriteLine("------");
-            AddTestInMemory(inMemoryCarDal);
-            Console.WriteLine("------");
-            GetByIdTest(inMemoryCarDal);
-            Console.WriteLine("------");
-            inMemoryCarDal.Update(new Car { CarId = 2, BrandId = 2, ColorId = 2, DailyPrice = 800000, ModelYear = 1964, Description = "Retro Update" });
+        //private static void InMemoryTest()
+        //{
+        //    CarManager carManager = new CarManager(new InMemoryCarDal());
+        //    InMemoryCarDal inMemoryCarDal = new InMemoryCarDal();
+        //    GetAllTest(inMemoryCarDal);
+        //    Console.WriteLine("------");
+        //    AddTestInMemory(inMemoryCarDal);
+        //    Console.WriteLine("------");
+        //    GetByIdTest(inMemoryCarDal);
+        //    Console.WriteLine("------");
+        //    inMemoryCarDal.Update(new Car { CarId = 2, BrandId = 2, ColorId = 2, DailyPrice = 800000, ModelYear = 1964, Description = "Retro Update" });
 
-            Console.WriteLine("in memory");
+        //    Console.WriteLine("in memory");
             
-                foreach (var car in carManager.GetByUnitPrice(40, 100).Data)
-                {
-                    Console.WriteLine(car.Description);
-                }
-        }
+        //        foreach (var car in carManager.GetByUnitPrice(40, 100).Data)
+        //        {
+        //            Console.WriteLine(car.Description);
+        //        }
+        //}
         private static void GetByIdTest(InMemoryCarDal inMemoryCarDal)
         {
             Console.WriteLine(inMemoryCarDal.GetById(5));
